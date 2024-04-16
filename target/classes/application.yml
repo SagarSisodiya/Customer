@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/invento_customer
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+            

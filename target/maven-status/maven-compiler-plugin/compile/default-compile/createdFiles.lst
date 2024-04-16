@@ -1,0 +1,10 @@
+com\invento\customer\service\CustomerService.class
+com\invento\customer\mapper\CustomerMapper.class
+com\invento\customer\config\CustomerConfig.class
+com\invento\customer\controller\CustomerController.class
+com\invento\customer\service\impl\CustomerServiceImpl.class
+com\invento\customer\model\Address.class
+com\invento\customer\repository\CustomerRepo.class
+com\invento\customer\model\Customer.class
+com\invento\customer\CustomerApplication.class
+com\invento\customer\dto\CustomerDto.class
