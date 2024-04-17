@@ -21,7 +21,7 @@ import com.invento.customer.service.CustomerService;
 import com.invento.customer.util.Constants;
 
 @RestController
-@RequestMapping(Constants.CUSTOMER)
+@RequestMapping("/customer")
 public class CustomerController {
 
 	private CustomerService customerService;
@@ -30,7 +30,7 @@ public class CustomerController {
 		this.customerService = customerService;
 	}
 
-	@GetMapping(Constants.LOGIN)
+	@GetMapping("/login")
 	public Customer getCustomerDetailsAfterLogin(Authentication authentication) {
 		
 		Optional<Customer> customerOp = customerService.getDetailsPostLogin(authentication);
@@ -39,20 +39,21 @@ public class CustomerController {
 				: new Customer();
 	}
 
-	@GetMapping(Constants.GET_CUSTOMER_LIST)
+	@GetMapping("/getCustomerList")
 	public ResponseEntity<List<Customer>> getCustomerList(
-			@RequestParam(defaultValue = "0") int pageNumber,
-			@RequestParam(defaultValue = "5") int pageSize,
-			@RequestParam(defaultValue = "firstName") String field,
-      @RequestParam(defaultValue = "ASC") Sort.Direction sortDirection) {
+			@RequestParam(defaultValue = Constants.DEFAULT_PAGE_NUMBER_VALUE) int pageNumber,
+			@RequestParam(defaultValue = Constants.DEFAULT_PAGE_SIZE_VALUE) int pageSize,
+			@RequestParam(defaultValue = Constants.DEFAULT_FIRST_NAME) String field,
+      @RequestParam(defaultValue = Constants.ASC) Sort.Direction sortDirection) {
 
-		List<Customer> customers = customerService.getCustomerList(pageNumber, pageSize, field, sortDirection);
+		List<Customer> customers = customerService.getCustomerList(pageNumber, pageSize, 
+				field, sortDirection);
 		return (customers.size() > 0) 
 				? ResponseEntity.status(HttpStatus.OK).body(customers)
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).body(customers);
 	}
 
-	@GetMapping(Constants.GET_CUSTOMER_BY_ID)
+	@GetMapping("/getCustomerById")
 	public ResponseEntity<Customer> getCustomerById(@RequestParam Long id) {
 
 		Optional<Customer> customerOp = customerService.getCustomerById(id);
@@ -61,7 +62,7 @@ public class CustomerController {
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Customer());
 	}
 
-	@PostMapping(Constants.REGISTER_CUSTOMER)
+	@PostMapping("/registerCustomer")
 	public ResponseEntity<String> addCustomer(@RequestBody CustomerDto dto) {
 
 		return customerService.addCustomer(dto)
@@ -69,7 +70,7 @@ public class CustomerController {
 				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create customer.");
 	}
 
-	@GetMapping(Constants.GET_CUSTOMER_BY_EMAIL)
+	@GetMapping("getCustomerByEmail")
 	public ResponseEntity<Customer> getCustomerByEmail(@RequestParam String email) {
 
 		List<Customer> customers = customerService.getCustomerByEmail(email);
@@ -78,7 +79,7 @@ public class CustomerController {
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Customer());
 	}
 
-	@DeleteMapping(Constants.DELETE)
+	@DeleteMapping("/delete")
 	public ResponseEntity<String> deleteCustomer(@RequestParam long id) {
 
 		return customerService.deleteCustomerById(id)

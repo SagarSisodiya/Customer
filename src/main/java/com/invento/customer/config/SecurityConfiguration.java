@@ -42,7 +42,7 @@ public class SecurityConfiguration {
 				public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 					CorsConfiguration config = new CorsConfiguration();
 					config.setAllowedMethods(Collections.singletonList(Constants.ASTERISK));					
-					config.setAllowedOrigins(Collections.singletonList(Constants.ANGULAR_LOCALHOST));					
+					config.setAllowedOrigins(Collections.singletonList(Constants.ASTERISK));					
 					config.setAllowedHeaders(Collections.singletonList(Constants.ASTERISK));
 					config.setAllowCredentials(true);
 					config.setExposedHeaders(Arrays.asList(Constants.JWT_HEADER));
@@ -52,6 +52,7 @@ public class SecurityConfiguration {
 			}))
 			.csrf(csrf -> csrf
 				.csrfTokenRequestHandler(handler)
+				.ignoringRequestMatchers("/customer/registerCustomer")
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
 			.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
 			.addFilterBefore(new ReqeustValidationBeforeFilter(), BasicAuthenticationFilter.class)
@@ -59,7 +60,7 @@ public class SecurityConfiguration {
 			.addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
 			.addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
 			.authorizeHttpRequests(request -> request
-			.requestMatchers(Constants.CUSTOMER_ROOT).hasRole(Constants.ADMIN))
+				.requestMatchers("/customer/**").hasRole(Constants.ADMIN))
 		.formLogin(Customizer.withDefaults())
 		.httpBasic(Customizer.withDefaults());
 		return http.build();

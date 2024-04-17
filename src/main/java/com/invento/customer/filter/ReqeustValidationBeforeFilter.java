@@ -8,6 +8,8 @@ import java.util.Base64;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.util.StringUtils;
 
+import com.invento.customer.util.Constants;
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,7 +28,7 @@ public class ReqeustValidationBeforeFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		String header = req.getHeader("authorization");
+		String header = req.getHeader(Constants.JWT_HEADER);
 		if (header != null) {
 			header = header.trim();
 			if (StringUtils.startsWithIgnoreCase(header, AUTHENTICATION_SCHEME_BASIC)) {
@@ -40,7 +42,7 @@ public class ReqeustValidationBeforeFilter implements Filter {
 						throw new BadCredentialsException("Invalid basic authentication token");
 					}
 					String email = token.substring(0, delim);
-					if (email.toLowerCase().contains("test")) {
+					if (email.toLowerCase().contains(Constants.TEST)) {
 						res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 						return;
 					}

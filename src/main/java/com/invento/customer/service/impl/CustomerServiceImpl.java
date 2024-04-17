@@ -22,6 +22,7 @@ import com.invento.customer.repository.CustomerRepo;
 import com.invento.customer.service.AddressService;
 import com.invento.customer.service.CustomerService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -64,10 +65,10 @@ public class CustomerServiceImpl implements CustomerService {
 		try {
 			customerOp = customerRepo.findByIdAndDeleted(id, false);
 			if (customerOp.isEmpty()) {
-				log.error("Customer not found with id: {}", id);
+				throw new EntityNotFoundException("Customer not found with id: " + id);
 			}
 		} catch (Exception e) {
-			log.error("Error finidng customer with id: {}", id);
+			log.error("Error: {}", e.getMessage());
 		}
 		return customerOp;
 	}

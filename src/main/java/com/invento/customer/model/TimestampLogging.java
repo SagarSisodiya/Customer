@@ -6,7 +6,17 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class TimestampLogging {
 
 	@CreatedDate
@@ -16,30 +26,4 @@ public class TimestampLogging {
 	@UpdateTimestamp
 	@Column(name = "updated_date")
 	private LocalDateTime updatedDate;
-
-	public TimestampLogging() {
-		super();
-	}
-
-	public TimestampLogging(LocalDateTime createdDate, LocalDateTime updatedDate) {
-		super();
-		this.createdDate = createdDate;
-		this.updatedDate = updatedDate;
-	}
-
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public LocalDateTime getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(LocalDateTime updatedDate) {
-		this.updatedDate = updatedDate;
-	}
 }

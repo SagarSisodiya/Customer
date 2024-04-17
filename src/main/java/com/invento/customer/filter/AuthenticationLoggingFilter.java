@@ -18,7 +18,7 @@ public class AuthenticationLoggingFilter implements Filter {
 	private static final Logger log = LoggerFactory.getLogger(AuthenticationLoggingFilter.class);
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
 			throws IOException, ServletException {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -28,7 +28,7 @@ public class AuthenticationLoggingFilter implements Filter {
 					+ " authenticated successfully with authorities: " 
 					+ authentication.getAuthorities().toString());
 		}
-		chain.doFilter(request, response);
+		filterChain.doFilter(request, response);
 		
 	}
 }
