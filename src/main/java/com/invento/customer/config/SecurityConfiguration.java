@@ -60,7 +60,9 @@ public class SecurityConfiguration {
 			.addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
 			.addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
 			.authorizeHttpRequests(request -> request
-				.requestMatchers("/customer/**").hasRole(Constants.ADMIN))
+				.requestMatchers("/customer/registerCustomer").permitAll()
+				.requestMatchers("/customer/delete").hasRole(Constants.ADMIN)
+				.requestMatchers("/customer/**").hasAnyRole(Constants.ADMIN,Constants.READ))
 		.formLogin(Customizer.withDefaults())
 		.httpBasic(Customizer.withDefaults());
 		return http.build();

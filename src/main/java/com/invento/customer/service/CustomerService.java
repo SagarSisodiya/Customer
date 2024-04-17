@@ -20,7 +20,7 @@ public interface CustomerService {
 
 	public boolean deleteCustomerById(long id);
 	
-	public List<Customer> getCustomerByEmail(String email);
+	public Optional<Customer> getCustomerByEmail(String email);
 
 	public Optional<Customer> getDetailsPostLogin(Authentication authentication);
 }

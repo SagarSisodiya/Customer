@@ -73,9 +73,9 @@ public class CustomerController {
 	@GetMapping("getCustomerByEmail")
 	public ResponseEntity<Customer> getCustomerByEmail(@RequestParam String email) {
 
-		List<Customer> customers = customerService.getCustomerByEmail(email);
-		return (customers.size()>0)
-				? ResponseEntity.status(HttpStatus.OK).body(customers.get(0))
+		Optional<Customer> customerOp = customerService.getCustomerByEmail(email);
+		return (customerOp.isPresent()) 
+				? ResponseEntity.status(HttpStatus.OK).body(customerOp.get())
 				: ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Customer());
 	}
 
@@ -83,7 +83,7 @@ public class CustomerController {
 	public ResponseEntity<String> deleteCustomer(@RequestParam long id) {
 
 		return customerService.deleteCustomerById(id)
-				? ResponseEntity.status(HttpStatus.OK).body("Failed to delete customer.")
-				: ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Customer deleted successfully.");
+				? ResponseEntity.status(HttpStatus.OK).body("Customer deleted successfully.")
+				: ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Failed to delete customer.");
 	}
 }

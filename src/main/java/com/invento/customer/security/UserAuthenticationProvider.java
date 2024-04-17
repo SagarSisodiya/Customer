@@ -2,6 +2,7 @@ package com.invento.customer.security;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -37,11 +38,10 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws  AuthenticationException {
 		String userName = authentication.getName();
 		String pass = authentication.getCredentials().toString();
-		List<Customer> customers = customerRepo.findByEmail(userName);
-		if(customers.size()>0) {
-			Customer customer = customers.get(0);
+		Optional<Customer> customers = customerRepo.findByEmail(userName);
+		if(customers.isPresent()) {
+			Customer customer = customers.get();
 			if(passwordEncoder.matches(pass, customer.getPassword())) {
-
 				return new UsernamePasswordAuthenticationToken(userName, pass, getGrantedAuthorities(customer.getAuthorities()));
 			} else {
 				throw new BadCredentialsException("Invalid username/password");

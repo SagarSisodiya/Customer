@@ -1,5 +1,6 @@
 package com.invento.customer.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ public class Customer extends TimestampLogging {
 	private Address shippingAddress;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER)
-	private Set<Authority> authorities;
+	@OneToMany(fetch=FetchType.EAGER, cascade= CascadeType.ALL)
+	@JoinColumn(name="customer_id")
+	private Set<Authority> authorities = new HashSet<>();
 }

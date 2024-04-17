@@ -9,6 +9,7 @@ public class Constants {
 	public static final String JWT_TOKEN =  "JWT TOKEN";
 	public static final String TEST = "test";
 	public static final String ADMIN = "ADMIN";
+	public static final String READ = "READ";
 	public static final String ASTERISK = "*";
 	public static final String INVENTO = "Invento";
 	public static final String USERNAME = "username";

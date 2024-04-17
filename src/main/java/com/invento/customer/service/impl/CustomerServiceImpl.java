@@ -54,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
 			Pageable pageRequest = PageRequest.of(pageNumber, pageSize, sortDirection, field);
 			customers = customerRepo.findAllByDeleted(false, pageRequest);
 		} catch (Exception e) {
-			log.error("Could not found customers.");
+			log.error("Could not find customers.");
 		}
 		return customers;
 	}
@@ -85,7 +85,7 @@ public class CustomerServiceImpl implements CustomerService {
 			created = true;
 			log.info("Customer created. Customer details : {}", customer);
 		} catch (Exception e) {
-			log.error("Customer creation failed. Error: ", e);
+			log.error("Customer creation failed. Error: {}", e.getMessage());
 		}
 		return created;
 	}
@@ -110,6 +110,21 @@ public class CustomerServiceImpl implements CustomerService {
 		return deleted;
 	}
 
+	@Override
+	public Optional<Customer> getCustomerByEmail(String email) {
+		return customerRepo.findByEmail(email);
+
+	}
+
+	@Override
+	public Optional<Customer> getDetailsPostLogin(Authentication authentication) {
+		return customerRepo.findByEmail(authentication.getName());
+	}
+
+	private void encodePassword(CustomerDto dto) {
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+	}
+	
 	private void handleAddress(CustomerDto dto, Customer customer) {
 
 		if (Objects.nonNull(dto.getBillingAddress())) {
@@ -122,29 +137,5 @@ public class CustomerServiceImpl implements CustomerService {
 				customer.setShippingAddress(shippinngAddress);
 			}
 		}
-	}
-
-	@Override
-	public List<Customer> getCustomerByEmail(String email) {
-		List<Customer> customers = new ArrayList<>();
-		if (email != null) {
-				customers = customerRepo.findByEmail(email);
-		} else {
-			log.error("Unable to find user by email: {}", email);
-		}
-		return customers;
-	}
-
-	private void encodePassword(CustomerDto dto) {
-		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-	}
-
-	@Override
-	public Optional<Customer> getDetailsPostLogin(Authentication authentication) {
-		List<Customer> customers = customerRepo.findByEmail(authentication.getName());
-		if(customers.size()>0) {
-			return Optional.of(customers.get(0));
-		}
-		return Optional.empty();
 	}
 }

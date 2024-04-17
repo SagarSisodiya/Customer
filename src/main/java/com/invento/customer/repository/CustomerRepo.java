@@ -20,7 +20,7 @@ public interface CustomerRepo extends PagingAndSortingRepository<Customer, Long>
 	
 	List<Customer> findAllByDeleted(boolean deleted, Pageable pageable);
 	
-	List<Customer> findByEmail(String email);
+	Optional<Customer> findByEmail(String email);
 
 	public Optional<Customer> findByIdAndDeleted(Long id, boolean b);
 }
